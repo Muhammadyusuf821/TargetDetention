@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
+
+:root {
+  --clr-neon: #14f7ff;
+  --clr-bg: #001414;
+  --font-size: 3rem;
+}
+
+*, 
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+/* Ensure the body font is applied correctly */
+body {
+  font-family: "Edu AU VIC WA NT Pre", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  min-height: 100vh;
+}
+
+.fads {
+  margin-top: 50px;
+  box-shadow: 1px 1px 1px 1px gray;
+}
+
+.students {
+  margin-top: 50px;
+  box-shadow: 1px 1px 1px 1px gray;
+}
+
+.glow-on-hover {
+  width: 250px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.glow-on-hover:before {
+  content: '';
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active {
+  color: #000;
+}
+
+.glow-on-hover:active:after {
+  background: transparent;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+.wrapper {
+  position: fixed;
+  left: 30%;
+   bottom: 3%;
+  transform: translate(-50%, -50%);
+}
+
+.link_wrapper {
+  position: relative;
+}
+
+a {
+  display: block;
+  width: 250px;
+  height: 48px;
+  line-height: 50px;
+  font-weight: bold;
+  text-decoration: none;
+  background: #333;
+  text-align: center;
+  margin-top: 30px;
+  color: #fff;
+  text-transform: uppercase;
+  border: 3px solid #333;
+  transition: all .35s;
+  border-radius: 10px;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+  border: 3px solid transparent;
+  position: absolute;
+  transform: rotate(45deg);
+  right: 0;
+  top: 0;
+  z-index: -1;
+  transition: all .35s;
+}
+
+.icon svg {
+  width: 30px;
+  position: absolute;
+  top: calc(50% - 15px);
+  left: calc(50% - 15px);
+  transform: rotate(-45deg);
+  fill: #2ecc71;
+  transition: all .35s;
+}
+
+a:hover {
+  width: 200px;
+  border: 3px solid #2ecc71;
+  background: transparent;
+  color: #2ecc71;
+}
+
+a:hover + .icon {
+  border: 3px solid #2ecc71;
+  right: -25%;
+}

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detention Form</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body class="p-6 background-image">
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-2 gap-10">
+      <div class="bg-white shadow-lg rounded-lg p-6 mt-0 fads fade-in">
+        <img
+          src="https://marketing.uz/uploads/articles/5412/article-original.png"
+          alt="School Logo"
+          class="w-40 mx-auto mb-4"
+        />
+        <h1 class="text-2xl font-bold text-center mb-6">Detention Qismi</h1>
+
+        <form id="detention-form" class="space-y-4">
+          <div>
+            <label class="block font-medium text-gray-700">Ism Sharif</label>
+            <input
+              type="text"
+              name="name"
+              class="w-full border rounded px-3 py-2"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block font-medium text-gray-700">Sinf</label>
+            <select
+              name="class"
+              class="w-full border rounded px-3 py-2"
+              required
+            >
+              <option value="">Sinf tanlang</option>
+              <option value="5A">5А</option>
+              <option value="5B">5Б</option>
+              <option value="6A">6А</option>
+              <option value="6B">6Б</option>
+              <option value="7A">7А</option>
+              <option value="7B">7Б</option>
+              <option value="8A">8А</option>
+              <option value="8B">8Б</option>
+              <option value="9A">9А</option>
+              <option value="9B">9Б</option>
+              <option value="10A">10А</option>
+              <option value="10B">10Б</option>
+              <option value="11A">11А</option>
+              <option value="11B">11Б</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-medium text-gray-700"
+              >Sabab:</label
+            >
+            <input
+              type="text"
+              name="reason"
+              class="w-full border rounded px-3 py-2"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block font-medium text-gray-700">Level</label>
+            <select
+              name="level"
+              class="w-full border rounded px-3 py-2"
+              required
+            >
+              <option value="">Level tanlang</option>
+              <option value="Low">Low</option>
+              <option value="Middle">Middle</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-medium text-gray-700 mb-2">Ustozni tanlang</label>
+            <select
+              name="teacher"
+              class="w-full border rounded px-3 py-2"
+              required
+            >
+              <option value="">Ustozni tanlang</option>
+              <option value="Ulugbek">Ulugbek</option>
+              <option value="Bekzod">Bekzod</option>
+              <option value="Sheroz">Sheroz</option>
+            </select>
+          </div>
+
+          <div class="wrapper">
+            <div class="link_wrapper">
+              <a type="button" onclick="addStudent()" href="#">Qoshish</a>
+              <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.832 268.832">
+                  <path d="M265.17 125.577l-80-80c-4.88-4.88-12.796-4.88-17.677 0-4.882 4.882-4.882 12.796 0 17.678l58.66 58.66H12.5c-6.903 0-12.5 5.598-12.5 12.5 0 6.903 5.597 12.5 12.5 12.5h213.654l-58.66 58.662c-4.88 4.882-4.88 12.796 0 17.678 2.44 2.44 5.64 3.66 8.84 3.66s6.398-1.22 8.84-3.66l79.997-80c4.883-4.882 4.883-12.796 0-17.678z"/>
+                </svg>
+              </div>
+            </div>
+            
+            
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="bg-white shadow-lg rounded-lg p-6 h-full flex flex-col students"
+        style="height: 610px"
+      >
+      <img
+      src="https://marketing.uz/uploads/articles/5412/article-original.png"
+      alt="School Logo"
+      class="w-40 mx-auto mb-4"
+    />
+        <h2 class="text-xl font-bold text-center mb-3">Studentlar Spiskasi</h2>
+
+        <ul
+          id="student-list"
+          class="space-y-4 overflow-y-auto flex-grow pr-2"
+          style="max-height: calc(100% - 60px)"
+        ></ul>
+
+        <div class="mt-4">
+          <button
+            type="button"
+            onclick="sendToTelegram()"
+            class="mx-40 glow-on-hover"
+          >
+            Jonatish
+          </button>
+        </div>
+      </div>
+    <script>
+      const studentList = [];
+
+      function addStudent() {
+        event.preventDefault()
+        const nameInput = document.querySelector('input[name="name"]');
+        const classInput = document.querySelector('select[name="class"]');
+        const reasonInput = document.querySelector('input[name="reason"]');
+        const levelInput = document.querySelector('select[name="level"]');
+        const teacherInput = document.querySelector('select[name="teacher"]');
+
+        const name = nameInput.value.trim();
+        const studentClass = classInput.value;
+        const reason = reasonInput.value.trim();
+        const teacher = teacherInput.value;
+        const level = levelInput.value;
+
+        if (!name || !studentClass || !teacher || !level || !reason) return;
+
+        const isDuplicate = studentList.some(
+          (student) =>
+            student.name.toLowerCase() === name.toLowerCase() &&
+            student.class === studentClass
+        );
+
+        if (isDuplicate) {
+          alert("Student allaqachon spiskada");
+          return;
+        }
+
+        const student = { name, class: studentClass, teacher, level, reason };
+        studentList.push(student);
+        localStorage.setItem('studentList', JSON.stringify(studentList)); 
+        updateStudentList();
+        clearInputs();
+      }
+
+      function clearInputs() {
+        event.preventDefault(); 
+        document.querySelector('input[name="name"]').value = "";
+        document.querySelector('select[name="class"]').value = "";
+        document.querySelector('input[name="reason"]').value = "";
+        document.querySelector('select[name="teacher"]').value = "";
+        document.querySelector('select[name="level"]').value = "";
+      }
+
+      function updateStudentList() {
+  const list = document.getElementById("student-list");
+  list.innerHTML = ""; // Clear the current list
+
+  studentList.forEach((student, index) => {
+    const li = document.createElement("li");
+    li.classList.add(
+      "flex",
+      "items-center",
+      "justify-between",
+      "border",
+      "rounded",
+      "px-3",
+      "py-2",
+      "fade-in"
+    );
+
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = student.name;
+
+    const moreLink = document.createElement("p");
+    moreLink.classList.add("cursor-pointer", "text-blue");
+    moreLink.textContent = "Student info";
+    moreLink.onclick = () => showStudentDetails(student);
+
+    const deleteIcon = document.createElement("i");
+deleteIcon.classList.add("fas", "fa-trash-alt", "text-red-500", "cursor-pointer");
+deleteIcon.onclick = () => deleteStudent(deleteIcon);
+
+
+    // Delete student when the delete icon is clicked
+    deleteIcon.onclick = () => {
+      studentList.splice(index, 1); // Remove student from the array
+      localStorage.setItem("studentList", JSON.stringify(studentList)); // Update local storage
+      updateStudentList(); // Refresh the student list
+    };
+
+    li.append(nameSpan, moreLink, deleteIcon);
+    list.appendChild(li);
+  });
+}
+
+
+      function showStudentDetails(student) {
+        alert(
+          `Имя: ${student.name}\nКласс: ${student.class}\nSabab: ${student.reason}\nUstoz: ${student.teacher}\nLevel: ${student.level}`
+        );  
+      }
+
+      function deleteStudent(element) {
+        studentList.splice(index, 1);
+        localStorage.setItem('studentList', JSON.stringify(studentList));
+        
+        updateStudentList();
+      } 
+
+      function sendToTelegram() {
+        const token = "7881537270:AAGQkizmVJH4wB0xLx3-6zm3MmMBzmwnB8Y";
+        const chatId = "-1002475402801";
+
+        if (studentList.length === 0) {
+          alert("Studentlar spiskasi bosh. Jonatishga xich narsa yoq.");
+          return;
+        }
+
+        let message = "Data: " + new Date().toLocaleString("ru-RU") + "\nOquvchilar soni: " + studentList.length + "\n\n";
+      studentList.forEach((student, index) => {
+        message += `${index + 1}) Ism: (${student.name}), Sinf: (${student.class}), Sabab: (${student.reason}), Ustoz: (${student.teacher}), Level: (${student.level})\n\n`;
+      });
+      axios
+          .post(`https://api.telegram.org/bot${token}/sendMessage`, {
+            chat_id: chatId,
+            text: message,
+          })
+          .then(() => {
+            alert("Telegramga Jonatildi!");
+
+            studentList.length = 0;
+            updateStudentList();
+          })
+          .catch(() => {
+            alert("Telegramga Jonatishda hatolik!");
+          });
+      }
+    </script>
+  </body>
+</html>
